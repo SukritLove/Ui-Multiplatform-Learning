@@ -24,12 +24,14 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
@@ -42,45 +44,44 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
+import org.koin.compose.rememberKoinInject
+import org.koin.core.component.KoinComponent
 
 
-class LoginScreen() : Screen {
-    @OptIn(ExperimentalFoundationApi::class)
+class LoginScreen : Screen, KoinComponent {
+    @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-//        val coroutineScope = rememberCoroutineScope()
-//        val pageCount = 2
-//        val pagerState = rememberPagerState(pageCount = { pageCount })
 
-        CreateScreen(onClick = {
+        CreateLoginScreen(onLoginClick = {
+            navigator.push(HomeScreen())
+        }, onRegisterClick = {
             navigator.push(RegisterScreen())
         })
+
 
     }
 }
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
-fun CreateScreen(onClick: () -> Unit) {
+fun CreateLoginScreen(onLoginClick: () -> Unit, onRegisterClick: () -> Unit) {
+
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
 
     var passwordVisibility by remember { mutableStateOf(false) }
 
-    val icon = if (passwordVisibility)
-        painterResource("drawable/show.png")
-    else
-        painterResource("drawable/hide.png")
+    val icon = if (passwordVisibility) painterResource("drawable/show.png")
+    else painterResource("drawable/hide.png")
 
 
 
-    Scaffold(
-        topBar = {
-            TopBar(modifier = Modifier)
-        }
-    ) {
+    Scaffold(topBar = {
+        TopBar(modifier = Modifier)
+    }) {
 
 
         LazyColumn(
@@ -95,15 +96,11 @@ fun CreateScreen(onClick: () -> Unit) {
             item {
                 Spacer(Modifier.padding(20.dp))
                 CreateTextField(
-                    label = "Username",
-                    value = username,
+                    label = "Username", value = username,
                     onValueChange = { username = it },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Text
-                    ),
-                    visualTransformation = VisualTransformation.None,
-                    trailingIcon = {}
-                )
+                    ), visualTransformation = VisualTransformation.None, trailingIcon = {})
             }
             item {
                 Spacer(Modifier.padding(20.dp))
@@ -136,7 +133,7 @@ fun CreateScreen(onClick: () -> Unit) {
                 CreateButton(
                     modifier = Modifier.size(width = 200.dp, height = 50.dp),
                     btnName = "Login",
-                    onClick = {},
+                    onClick = onLoginClick,
                 )
             }
             item {
@@ -144,7 +141,7 @@ fun CreateScreen(onClick: () -> Unit) {
                 CreateButton(
                     modifier = Modifier.size(width = 200.dp, height = 50.dp),
                     btnName = "Register",
-                    onClick = onClick,
+                    onClick = onRegisterClick,
                 )
             }
 
