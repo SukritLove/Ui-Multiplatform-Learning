@@ -33,14 +33,20 @@ kotlin {
         val desktopMain by getting
 
         androidMain.dependencies {
+            implementation(libs.koin.android)
+
             implementation(libs.compose.ui)
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
+
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
         }
         commonMain.dependencies {
+            api(libs.koin.core)
+            api(libs.koin.compose)
+
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material)
@@ -52,6 +58,9 @@ kotlin {
             implementation(libs.voyager.transitions)
             implementation(libs.voyager.tab.navigator)
             implementation(libs.voyager.bottom.sheet.navigator)
+
+            implementation(libs.multiplatform.settings.no.arg)
+            implementation(libs.multiplatform.settings.coroutines)
         }
     }
 }
@@ -96,6 +105,8 @@ android {
     }
 }
 dependencies {
+
+
 }
 
 compose.desktop {

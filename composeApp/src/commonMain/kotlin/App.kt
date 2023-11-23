@@ -3,7 +3,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import cafe.adriel.voyager.navigator.Navigator
-import screen.LoginScreen
+import Login.LoginScreen
 
 @Composable
 fun App() {
