@@ -42,56 +42,37 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import org.koin.core.component.KoinComponent
 import Register.RegisterScreen
+import androidx.compose.foundation.layout.Column
 import org.koin.compose.rememberKoinInject
 
 
 class LoginScreen : Screen, KoinComponent {
-    @OptIn(ExperimentalComposeUiApi::class)
+    @OptIn(ExperimentalComposeUiApi::class, ExperimentalResourceApi::class)
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-       // val loginModel = rememberKoinInject<LoginViewModel>()
+        var username by remember { mutableStateOf("") }
+        var password by remember { mutableStateOf("") }
 
-        CreateLoginScreen(onLoginClick = {
-            navigator.push(HomeScreen())
-        }, onRegisterClick = {
-            navigator.push(RegisterScreen())
-        })
+        var passwordVisibility by remember { mutableStateOf(false) }
 
-
-    }
-}
-
-@OptIn(ExperimentalResourceApi::class)
-@Composable
-fun CreateLoginScreen(onLoginClick: () -> Unit, onRegisterClick: () -> Unit) {
-
-    var username by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-
-
-    var passwordVisibility by remember { mutableStateOf(false) }
-
-    val icon = if (passwordVisibility) painterResource("drawable/show.png")
-    else painterResource("drawable/hide.png")
+        val icon = if (passwordVisibility) painterResource("drawable/show.png")
+        else painterResource("drawable/hide.png")
 
 
 
-    Scaffold(topBar = {
-        TopBar(modifier = Modifier)
-    }) {
+        Scaffold(topBar = {
+            TopBar(modifier = Modifier)
+        }) {
 
+            Column(
+                Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
 
-        LazyColumn(
-            Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-
-            item {
                 Image(painterResource("drawable/profile-user.png"), null, Modifier.size(100.dp))
-            }
-            item {
+                //Username Input
                 Spacer(Modifier.padding(20.dp))
                 CreateTextField(
                     label = "Username", value = username,
@@ -99,10 +80,8 @@ fun CreateLoginScreen(onLoginClick: () -> Unit, onRegisterClick: () -> Unit) {
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Text
                     ), visualTransformation = VisualTransformation.None, trailingIcon = {})
-            }
-            item {
+                //Password Input
                 Spacer(Modifier.padding(20.dp))
-
                 CreateTextField(
                     label = "Password",
                     value = password,
@@ -124,26 +103,25 @@ fun CreateLoginScreen(onLoginClick: () -> Unit, onRegisterClick: () -> Unit) {
                     visualTransformation = if (passwordVisibility) VisualTransformation.None
                     else PasswordVisualTransformation()
                 )
-            }
-
-            item {
+                //Login Button
                 Spacer(Modifier.padding(20.dp))
                 CreateButton(
                     modifier = Modifier.size(width = 200.dp, height = 50.dp),
                     btnName = "Login",
-                    onClick = onLoginClick,
+                    onClick = {
+                        navigator.push(HomeScreen(username, password))
+                    },
                 )
-            }
-            item {
-                Spacer(Modifier.padding(10.dp))
+                //Register Button
+                Spacer(Modifier.padding(20.dp))
                 CreateButton(
                     modifier = Modifier.size(width = 200.dp, height = 50.dp),
-                    btnName = "Register",
-                    onClick = onRegisterClick,
+                    btnName = "Login",
+                    onClick = {
+                        navigator.push(RegisterScreen())
+                    },
                 )
             }
-
-
         }
     }
 }
@@ -158,8 +136,6 @@ fun CreateTextField(
     keyboardOptions: KeyboardOptions,
     trailingIcon: @Composable (() -> Unit)? = null
 ) {
-
-
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,

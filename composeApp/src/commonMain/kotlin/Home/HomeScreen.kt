@@ -9,20 +9,26 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.core.screen.Screen
 
-class HomeScreen : Screen {
+class HomeScreen(username: String = "", password: String = "") : Screen {
+    val username = username
+    val password = password
 
     @Composable
     override fun Content() {
-        CreateHomeScreen()
+
+        CreateHomeScreen(username = username, password = password)
     }
 }
 
 @Composable
-fun CreateHomeScreen() {
+fun CreateHomeScreen(username: String, password: String) {
     Column(
         Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
-    ) { Text("Welcome Back") }
+    ) {
+        Text("Welcome Back $username")
+        Text("Your Password is $password")
+    }
 
 }

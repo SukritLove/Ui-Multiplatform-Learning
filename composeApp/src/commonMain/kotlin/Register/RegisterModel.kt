@@ -1,0 +1,4 @@
+package Register
+
+class RegisterModel {
+}
