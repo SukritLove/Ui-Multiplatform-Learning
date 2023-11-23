@@ -43,8 +43,8 @@ import org.jetbrains.compose.resources.painterResource
 import org.koin.core.component.KoinComponent
 import Register.RegisterScreen
 import androidx.compose.foundation.layout.Column
-import org.koin.compose.rememberKoinInject
-
+import cafe.adriel.voyager.navigator.Navigator
+import data.UserData
 
 class LoginScreen : Screen, KoinComponent {
     @OptIn(ExperimentalComposeUiApi::class, ExperimentalResourceApi::class)
@@ -62,7 +62,7 @@ class LoginScreen : Screen, KoinComponent {
 
 
         Scaffold(topBar = {
-            TopBar(modifier = Modifier)
+            TopBar()
         }) {
 
             Column(
@@ -109,14 +109,18 @@ class LoginScreen : Screen, KoinComponent {
                     modifier = Modifier.size(width = 200.dp, height = 50.dp),
                     btnName = "Login",
                     onClick = {
-                        navigator.push(HomeScreen(username, password))
+                        loginClick(
+                            navigator = navigator,
+                            username = username,
+                            password = password
+                        )
                     },
                 )
                 //Register Button
                 Spacer(Modifier.padding(20.dp))
                 CreateButton(
                     modifier = Modifier.size(width = 200.dp, height = 50.dp),
-                    btnName = "Login",
+                    btnName = "Register",
                     onClick = {
                         navigator.push(RegisterScreen())
                     },
@@ -126,9 +130,15 @@ class LoginScreen : Screen, KoinComponent {
     }
 }
 
+
+fun loginClick(navigator: Navigator, username: String, password: String) {
+    val userData = UserData(username, password)
+    navigator.push(HomeScreen(userData))
+}
+
+
 @Composable
 fun CreateTextField(
-    modifier: Modifier = Modifier,
     label: String,
     value: String,
     onValueChange: (String) -> Unit,
@@ -161,7 +171,7 @@ fun CreateButton(modifier: Modifier = Modifier, btnName: String, onClick: () -> 
 
 
 @Composable
-fun TopBar(modifier: Modifier = Modifier) {
+fun TopBar() {
     TopAppBar(modifier = Modifier.fillMaxWidth(), contentPadding = PaddingValues(0.dp)) {
         Box(
             modifier = Modifier.fillMaxWidth(),
