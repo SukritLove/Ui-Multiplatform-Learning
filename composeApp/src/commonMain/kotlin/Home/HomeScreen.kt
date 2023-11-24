@@ -9,13 +9,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.core.screen.Screen
 import data.UserData
+import data.UserDataStore
 
-class HomeScreen(/*username: String = "", password: String = "", */userData: UserData) : Screen {
-    /*val username = userData.username
-    val password = userData.password*/
-
-    val username = userData.username
-    val password = userData.password
+class HomeScreen() : Screen {
+    val username = UserDataStore.userData.username
+    val password = UserDataStore.userData.password
     @Composable
     override fun Content() {
 

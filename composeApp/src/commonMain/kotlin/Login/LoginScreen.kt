@@ -42,9 +42,14 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import org.koin.core.component.KoinComponent
 import Register.RegisterScreen
+import androidx.compose.foundation.gestures.ScrollableState
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import cafe.adriel.voyager.navigator.Navigator
 import data.UserData
+import data.UserDataStore
 
 class LoginScreen : Screen, KoinComponent {
     @OptIn(ExperimentalComposeUiApi::class, ExperimentalResourceApi::class)
@@ -65,66 +70,80 @@ class LoginScreen : Screen, KoinComponent {
             TopBar()
         }) {
 
-            Column(
+            LazyColumn(
                 Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
 
-                Image(painterResource("drawable/profile-user.png"), null, Modifier.size(100.dp))
+                item {
+                    Image(
+                        painterResource("drawable/profile-user.png"),
+                        null,
+                        Modifier.size(100.dp)
+                    )
+                }
                 //Username Input
-                Spacer(Modifier.padding(20.dp))
-                CreateTextField(
-                    label = "Username", value = username,
-                    onValueChange = { username = it },
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Text
-                    ), visualTransformation = VisualTransformation.None, trailingIcon = {})
+                item {
+                    Spacer(Modifier.padding(20.dp))
+                    CreateTextField(
+                        label = "Username", value = username,
+                        onValueChange = { username = it },
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Text
+                        ), visualTransformation = VisualTransformation.None, trailingIcon = {})
+                }
                 //Password Input
-                Spacer(Modifier.padding(20.dp))
-                CreateTextField(
-                    label = "Password",
-                    value = password,
-                    onValueChange = { password = it },
-                    trailingIcon = {
-                        IconButton(onClick = {
-                            passwordVisibility = !passwordVisibility
-                        }) {
-                            Icon(
-                                painter = icon,
-                                contentDescription = "Visibility Icon",
-                                Modifier.size(20.dp)
-                            )
-                        }
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Password
-                    ),
-                    visualTransformation = if (passwordVisibility) VisualTransformation.None
-                    else PasswordVisualTransformation()
-                )
+                item {
+                    Spacer(Modifier.padding(20.dp))
+                    CreateTextField(
+                        label = "Password",
+                        value = password,
+                        onValueChange = { password = it },
+                        trailingIcon = {
+                            IconButton(onClick = {
+                                passwordVisibility = !passwordVisibility
+                            }) {
+                                Icon(
+                                    painter = icon,
+                                    contentDescription = "Visibility Icon",
+                                    Modifier.size(20.dp)
+                                )
+                            }
+                        },
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Password
+                        ),
+                        visualTransformation = if (passwordVisibility) VisualTransformation.None
+                        else PasswordVisualTransformation()
+                    )
+                }
                 //Login Button
-                Spacer(Modifier.padding(20.dp))
-                CreateButton(
-                    modifier = Modifier.size(width = 200.dp, height = 50.dp),
-                    btnName = "Login",
-                    onClick = {
-                        loginClick(
-                            navigator = navigator,
-                            username = username,
-                            password = password
-                        )
-                    },
-                )
+                item {
+                    Spacer(Modifier.padding(20.dp))
+                    CreateButton(
+                        modifier = Modifier.size(width = 200.dp, height = 50.dp),
+                        btnName = "Login",
+                        onClick = {
+                            loginClick(
+                                navigator = navigator,
+                                username = username,
+                                password = password
+                            )
+                        },
+                    )
+                }
                 //Register Button
-                Spacer(Modifier.padding(20.dp))
-                CreateButton(
-                    modifier = Modifier.size(width = 200.dp, height = 50.dp),
-                    btnName = "Register",
-                    onClick = {
-                        navigator.push(RegisterScreen())
-                    },
-                )
+                item {
+                    Spacer(Modifier.padding(20.dp))
+                    CreateButton(
+                        modifier = Modifier.size(width = 200.dp, height = 50.dp),
+                        btnName = "Register",
+                        onClick = {
+                            navigator.push(RegisterScreen())
+                        },
+                    )
+                }
             }
         }
     }
@@ -132,8 +151,8 @@ class LoginScreen : Screen, KoinComponent {
 
 
 fun loginClick(navigator: Navigator, username: String, password: String) {
-    val userData = UserData(username, password)
-    navigator.push(HomeScreen(userData))
+    UserDataStore.userData = UserData(username, password)
+    navigator.push(HomeScreen())
 }
 
 
@@ -170,6 +189,7 @@ fun CreateButton(modifier: Modifier = Modifier, btnName: String, onClick: () -> 
 }
 
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun TopBar() {
     TopAppBar(modifier = Modifier.fillMaxWidth(), contentPadding = PaddingValues(0.dp)) {
