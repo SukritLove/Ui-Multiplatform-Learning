@@ -62,6 +62,9 @@ kotlin {
             implementation(libs.multiplatform.settings.no.arg)
             implementation(libs.multiplatform.settings.coroutines)
         }
+        iosMain.dependencies {
+            
+        }
     }
 }
 
