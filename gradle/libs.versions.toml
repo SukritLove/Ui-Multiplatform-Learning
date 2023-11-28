@@ -15,6 +15,7 @@ androidx-test-junit = "1.1.5"
 androidx-espresso-core = "3.5.1"
 kotlin = "1.9.20"
 junit = "4.13.2"
+sqlDelight = "2.0.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -41,6 +42,14 @@ koin-core = { group = "io.insert-koin", name = "koin-core", version = "3.5.2-RC1
 koin-android = { group = "io.insert-koin", name = "koin-android", version = "3.5.2-RC1" }
 multiplatform-settings-no-arg = { group = "com.russhwolf", name = "multiplatform-settings-no-arg", version = "1.1.1" }
 multiplatform-settings-coroutines = { group = "com.russhwolf", name = "multiplatform-settings-coroutines", version = "1.1.1" }
+primitive-adapters = { group = "app.cash.sqldelight", name = "primitive-adapters", version = "2.0.0" }
+runtime = { group = "app.cash.sqldelight", name = "runtime", version = "2.0.0" }
+coroutines-extensions = { group = "app.cash.sqldelight", name = "coroutines-extensions", version = "2.0.0" }
+android-driver = { group = "app.cash.sqldelight", name = "android-driver", version = "2.0.0" }
+native-driver = { group = "app.cash.sqldelight", name = "native-driver", version = "2.0.0" }
+sqlite-driver = { group = "app.cash.sqldelight", name = "sqlite-driver", version = "2.0.0" }
+stately-common = { group = "co.touchlab", name = "stately-common", version = "2.0.5" }
+stately-concurrency = { group = "co.touchlab", name = "stately-concurrency", version = "2.0.5" }
 
 
 [plugins]
@@ -48,3 +57,5 @@ jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlinX-serialization-plugin = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+sqlDelight-plugin = { id = "app.cash.sqldelight", version.ref = "sqlDelight" }

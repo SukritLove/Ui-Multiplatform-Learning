@@ -36,12 +36,20 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import org.koin.core.component.KoinComponent
 import AddContact.AddContactScreen
+import DriverFactory
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
+import app.cash.sqldelight.db.SqlDriver
 import cafe.adriel.voyager.navigator.Navigator
+import com.example.Database
+import com.russhwolf.settings.Settings
+import createDatabase
 import data.UserData
+import data.UserDataRepo
+import data.UserDataRepoImplement
 import data.UserDataStore
 import model.Model
+import org.jetbrains.skia.Data
 
 
 class LoginScreen : Screen, KoinComponent {
