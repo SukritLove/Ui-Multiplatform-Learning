@@ -2,9 +2,6 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.compose.ExperimentalComposeLibrary
 
 plugins {
-
-    alias(libs.plugins.kotlinX.serialization.plugin)
-    alias(libs.plugins.sqlDelight.plugin)
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
@@ -42,11 +39,9 @@ kotlin {
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
 
-            implementation(libs.android.driver)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
-            implementation(libs.sqlite.driver)
         }
         commonMain.dependencies {
             api(libs.koin.core)
@@ -66,22 +61,9 @@ kotlin {
 
             implementation(libs.multiplatform.settings.no.arg)
             implementation(libs.multiplatform.settings.coroutines)
-
-            implementation(libs.primitive.adapters)
-            implementation(libs.runtime)
-            implementation(libs.coroutines.extensions)
-
-            implementation(libs.stately.common)
         }
         iosMain.dependencies {
-            implementation(libs.native.driver)
-        }
-    }
-}
-sqldelight {
-    databases {
-        create("Database") {
-            packageName.set("com.example")
+            
         }
     }
 }
