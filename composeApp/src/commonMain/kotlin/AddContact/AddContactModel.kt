@@ -1,0 +1,4 @@
+package AddContact
+
+class AddContactModel {
+}

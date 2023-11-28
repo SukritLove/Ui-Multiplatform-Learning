@@ -3,11 +3,8 @@ package Login
 import Home.HomeScreen
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,7 +17,6 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,33 +25,33 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import org.koin.core.component.KoinComponent
-import Register.RegisterScreen
-import androidx.compose.foundation.gestures.ScrollableState
-import androidx.compose.foundation.gestures.scrollable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
+import AddContact.AddContactScreen
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.width
 import cafe.adriel.voyager.navigator.Navigator
 import data.UserData
 import data.UserDataStore
+import model.Model
+
 
 class LoginScreen : Screen, KoinComponent {
     @OptIn(ExperimentalComposeUiApi::class, ExperimentalResourceApi::class)
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
+
+
+
         var username by remember { mutableStateOf("") }
         var password by remember { mutableStateOf("") }
 
@@ -67,7 +63,7 @@ class LoginScreen : Screen, KoinComponent {
 
 
         Scaffold(topBar = {
-            TopBar()
+            Model.TopBar(title = "Login", modifier = Modifier.fillMaxWidth())
         }) {
 
             LazyColumn(
@@ -77,6 +73,7 @@ class LoginScreen : Screen, KoinComponent {
             ) {
 
                 item {
+                    Spacer(Modifier.padding(20.dp))
                     Image(
                         painterResource("drawable/profile-user.png"),
                         null,
@@ -87,6 +84,7 @@ class LoginScreen : Screen, KoinComponent {
                 item {
                     Spacer(Modifier.padding(20.dp))
                     CreateTextField(
+                        modifier = Modifier.width(300.dp),
                         label = "Username", value = username,
                         onValueChange = { username = it },
                         keyboardOptions = KeyboardOptions(
@@ -97,6 +95,7 @@ class LoginScreen : Screen, KoinComponent {
                 item {
                     Spacer(Modifier.padding(20.dp))
                     CreateTextField(
+                        modifier = Modifier.width(300.dp),
                         label = "Password",
                         value = password,
                         onValueChange = { password = it },
@@ -130,6 +129,7 @@ class LoginScreen : Screen, KoinComponent {
                                 username = username,
                                 password = password
                             )
+
                         },
                     )
                 }
@@ -138,15 +138,18 @@ class LoginScreen : Screen, KoinComponent {
                     Spacer(Modifier.padding(20.dp))
                     CreateButton(
                         modifier = Modifier.size(width = 200.dp, height = 50.dp),
-                        btnName = "Register",
+                        btnName = "Add Contact",
                         onClick = {
-                            navigator.push(RegisterScreen())
+                            navigator.push(AddContactScreen())
                         },
                     )
+                    Spacer(Modifier.padding(20.dp))
                 }
             }
         }
     }
+
+
 }
 
 
@@ -158,6 +161,7 @@ fun loginClick(navigator: Navigator, username: String, password: String) {
 
 @Composable
 fun CreateTextField(
+    modifier: Modifier = Modifier,
     label: String,
     value: String,
     onValueChange: (String) -> Unit,
@@ -166,6 +170,7 @@ fun CreateTextField(
     trailingIcon: @Composable (() -> Unit)? = null
 ) {
     OutlinedTextField(
+        modifier = modifier,
         value = value,
         onValueChange = onValueChange,
         label = { Text(label) },
@@ -189,18 +194,3 @@ fun CreateButton(modifier: Modifier = Modifier, btnName: String, onClick: () -> 
 }
 
 
-@OptIn(ExperimentalResourceApi::class)
-@Composable
-fun TopBar() {
-    TopAppBar(modifier = Modifier.fillMaxWidth(), contentPadding = PaddingValues(0.dp)) {
-        Box(
-            modifier = Modifier.fillMaxWidth(),
-            contentAlignment = Alignment.Center,
-        ) {
-            Text(
-                text = "Login",
-                style = TextStyle(fontSize = 20.sp),
-            )
-        }
-    }
-}
